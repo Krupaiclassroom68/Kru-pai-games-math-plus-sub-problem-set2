@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>Story Math · Kru Pai Classroom</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Tahoma", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #b39ddb 0, #1a237e 55%, #0d1333 100%);
+      color: #fdfdfd;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 900px;
+      padding: 16px;
+    }
+
+    .card {
+      background: rgba(15, 22, 58, 0.9);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+      border: 2px solid rgba(179, 157, 219, 0.8);
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      text-align: center;
+      color: #ffeb3b;
+      text-shadow: 0 0 8px rgba(255, 235, 59, 0.7);
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      text-align: center;
+      color: #e1bee7;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #c5cae9;
+      margin-bottom: 18px;
+    }
+
+    .input-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    label {
+      font-size: 0.95rem;
+    }
+
+    input[type="text"] {
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: none;
+      min-width: 220px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .part-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .part-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      background: linear-gradient(135deg, #5c6bc0, #7e57c2);
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.15s;
+      opacity: 0.85;
+    }
+
+    .part-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45);
+      opacity: 1;
+    }
+
+    .part-btn.active {
+      border: 2px solid #ffeb3b;
+      box-shadow: 0 0 14px rgba(255, 235, 59, 0.7);
+      opacity: 1;
+    }
+
+    .primary-btn {
+      display: block;
+      margin: 0 auto;
+      margin-top: 8px;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 26px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ffca28, #ff8f00);
+      color: #212121;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.15s;
+    }
+
+    .primary-btn:disabled {
+      opacity: 0.5;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .primary-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
+    }
+
+    .small-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 6px 16px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      background: #3949ab;
+      color: #fff;
+      margin-right: 6px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    }
+
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .tag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(63, 81, 181, 0.8);
+      color: #e8eaf6;
+    }
+
+    .score-tag {
+      background: rgba(233, 30, 99, 0.85);
+    }
+
+    .name-tag {
+      background: rgba(0, 188, 212, 0.85);
+    }
+
+    .question-box {
+      background: rgba(26, 35, 126, 0.9);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(187, 134, 252, 0.7);
+      font-size: 1.05rem;
+      line-height: 1.5;
+      white-space: normal;
+    }
+
+    .equation-area {
+      margin: 14px 0;
+    }
+
+    .equation-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      margin: 6px 0;
+      flex-wrap: wrap;
+    }
+
+    .equation-line-label {
+      min-width: 200px;
+      text-align: right;
+      font-size: 0.95rem;
+      color: #e1bee7;
+    }
+
+    .equation-line-slots {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .square-slot,
+    .square-slot.answer-slot {
+      width: 62px;
+      height: 62px;
+      border-radius: 12px;
+      border: 3px solid #7e57c2;
+      background: #f5f5ff;
+      color: #1a237e;
+      font-size: 1.3rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+    }
+
+    .square-slot.answer-slot {
+      border-color: #ffca28;
+      background: #fff8e1;
+    }
+
+    .circle-slot {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 3px solid #42a5f5;
+      background: #e3f2fd;
+      color: #0d47a1;
+      font-size: 1.6rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+    }
+
+    .slot-label {
+      font-size: 1.4rem;
+      padding: 0 6px;
+    }
+
+    .slot.selected {
+      box-shadow: 0 0 0 3px rgba(255, 235, 59, 0.9);
+    }
+
+    .slot.disabled {
+      opacity: 0.7;
+      cursor: default;
+    }
+
+    .keypad {
+      margin-top: 8px;
+      background: rgba(26, 35, 126, 0.9);
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px solid rgba(100, 181, 246, 0.7);
+    }
+
+    .keypad-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .key-btn {
+      min-width: 48px;
+      padding: 10px 0;
+      border-radius: 12px;
+      border: none;
+      background: #5c6bc0;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+      transition: transform 0.05s ease, box-shadow 0.05s ease;
+    }
+
+    .key-btn.op {
+      background: #26c6da;
+      color: #00363a;
+    }
+
+    .key-btn.special {
+      background: #ab47bc;
+      font-size: 0.9rem;
+      padding: 8px 6px;
+    }
+
+    .key-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .bottom-controls {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .msg-area {
+      min-height: 32px;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .emoji {
+      font-size: 1.4rem;
+    }
+
+    .btn-group-right {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    #check-btn {
+      background: linear-gradient(135deg, #00e676, #00c853);
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 10px 22px;
+      min-width: 135px;
+    }
+
+    #next-btn {
+      background: #ff9800;
+    }
+
+    #back-home-btn {
+      background: #3949ab;
+    }
+
+    .confetti-piece {
+      position: fixed;
+      width: 10px;
+      height: 14px;
+      background: #ffeb3b;
+      border-radius: 2px;
+      opacity: 0.9;
+      pointer-events: none;
+      animation: confetti-fall 1.4s linear forwards;
+      z-index: 9999;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translate3d(var(--x-start), -60px, 0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate3d(var(--x-end), 110vh, 0) rotate(340deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .square-slot,
+      .square-slot.answer-slot {
+        width: 54px;
+        height: 54px;
+        font-size: 1.1rem;
+      }
+
+      .circle-slot {
+        width: 50px;
+        height: 50px;
+        font-size: 1.4rem;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+      }
+
+      .question-box {
+        font-size: 1rem;
+      }
+
+      .equation-line-label {
+        min-width: 160px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- START SCREEN -->
+    <div id="start-screen" class="card">
+      <h1>Story Math · บวก–ลบจากโจทย์เล่าเรื่อง</h1>
+      <h2>Kru Pai Classroom</h2>
+      <p class="subtitle">
+        ให้เด็กอ่านโจทย์แล้ว เติมสมการด้วยตนเอง<br />
+        ช่องสี่เหลี่ยม = จำนวน, ช่องวงกลม = เครื่องหมาย + หรือ -
+      </p>
+
+      <div class="input-row">
+        <div>
+          <label for="student-name">ชื่อนักเรียน :</label><br />
+          <input id="student-name" type="text" placeholder="พิมพ์ชื่อตรงนี้จ้า" />
+        </div>
+      </div>
+
+      <h3 style="text-align:center; margin-bottom:8px;">เลือก Part ที่ต้องการฝึก</h3>
+      <div class="part-buttons">
+        <button class="part-btn" data-part="A">
+          Part A · มากกว่า (ใช้ +)
+        </button>
+        <button class="part-btn" data-part="B">
+          Part B · น้อยกว่า (ใช้ -)
+        </button>
+        <button class="part-btn" data-part="C">
+          Part C · ผสม มากกว่า/น้อยกว่า
+        </button>
+        <button class="part-btn" data-part="D">
+          Part D · โจทย์สองชั้น (3 บรรทัด)
+        </button>
+      </div>
+
+      <button id="start-btn" class="primary-btn" disabled>
+        เริ่มเกม
+      </button>
+
+      <p style="text-align:center; margin-top:12px; font-size:0.85rem; color:#c5cae9;">
+        * เกมนี้ออกแบบสำหรับเด็กประถมต้น เน้นให้เข้าใจความหมายของ<br />
+        “มากกว่า / น้อยกว่า / รวมกัน” ผ่านสมการอย่างง่าย
+      </p>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="game-screen" class="card" style="display:none;">
+      <div class="top-bar">
+        <div class="tag name-tag" id="name-display">👧 ชื่อ: -</div>
+        <div class="tag" id="part-display">Part -</div>
+        <div class="tag score-tag" id="score-display">คะแนน: 0/0</div>
+      </div>
+
+      <div class="question-box" id="question-text">
+        <!-- โจทย์จะแสดงตรงนี้ -->
+      </div>
+
+      <div class="equation-area" id="equation-area">
+        <!-- ช่องสมการ / หลายบรรทัด จะแทรกด้วย JS -->
+      </div>
+
+      <div class="keypad">
+        <div class="keypad-row">
+          <button class="key-btn" data-key="7">7</button>
+          <button class="key-btn" data-key="8">8</button>
+          <button class="key-btn" data-key="9">9</button>
+        </div>
+        <div class="keypad-row">
+          <button class="key-btn" data-key="4">4</button>
+          <button class="key-btn" data-key="5">5</button>
+          <button class="key-btn" data-key="6">6</button>
+        </div>
+        <div class="keypad-row">
+          <button class="key-btn" data-key="1">1</button>
+          <button class="key-btn" data-key="2">2</button>
+          <button class="key-btn" data-key="3">3</button>
+        </div>
+        <div class="keypad-row">
+          <button class="key-btn" data-key="0">0</button>
+          <button class="key-btn op" data-key="+">+</button>
+          <button class="key-btn op" data-key="-">-</button>
+        </div>
+        <div class="keypad-row">
+          <button class="key-btn special" id="clear-slot">ลบช่อง</button>
+          <button class="key-btn special" id="clear-all">ล้างสมการ</button>
+        </div>
+      </div>
+
+      <div class="bottom-controls">
+        <div class="msg-area" id="message-area">
+          <!-- ข้อความ + อิโมจิ -->
+        </div>
+        <div class="btn-group-right">
+          <button class="small-btn" id="back-home-btn">กลับหน้าแรก</button>
+          <button class="small-btn" id="check-btn">ตรวจคำตอบ</button>
+          <button class="small-btn" id="next-btn">ข้อถัดไป</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --------- เสียงปุ่ม ----------
+    let audioCtx = null;
+    function playClickSound(pitch = 660, duration = 0.07) {
+      try {
+        if (!audioCtx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) return;
+          audioCtx = new AC();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = pitch;
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        const now = audioCtx.currentTime;
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+        osc.start(now);
+        osc.stop(now + duration);
+      } catch (e) {
+        // เงียบไปถ้าเล่นไม่ได้
+      }
+    }
+
+    // ---------- Data Helper ----------
+    // simpleEq: ตอนนี้ไม่มี type "eq" แล้ว มีแค่ num, op, ans
+    function simpleEq(num1, op, num2, ans) {
+      return [
+        { type: "num", correct: num1 },
+        { type: "op", correct: op },
+        { type: "num", correct: num2 },
+        { type: "ans", correct: ans }
+      ];
+    }
+
+    // -------------------------
+    // DATA: Questions
+    // -------------------------
+    const questionsByPart = {
+      A: [
+        {
+          story: "แม่มีแมว 18 ตัว แม่มีสุนัขมากกว่าแมว 7 ตัว แม่มีสุนัขกี่ตัว?",
+          eqLabel: "จำนวนสุนัขของแม่ =",
+          slots: simpleEq(18, "+", 7, 25)
+        },
+        {
+          story: "ในกรงมีนกตัวเล็ก 15 ตัว นกตัวใหญ่มีมากกว่านกตัวเล็ก 5 ตัว นกตัวใหญ่มีทั้งหมดกี่ตัว?",
+          eqLabel: "จำนวนนกตัวใหญ่ =",
+          slots: simpleEq(15, "+", 5, 20)
+        },
+        {
+          story: "ห้อง ป.2/1 มีนักเรียนผู้หญิง 16 คน นักเรียนผู้ชายมีมากกว่าผู้หญิง 4 คน นักเรียนผู้ชายมีกี่คน?",
+          eqLabel: "จำนวนผู้ชายในห้อง =",
+          slots: simpleEq(16, "+", 4, 20)
+        },
+        {
+          story: "ร้านขนมมีโดนัท 12 ชิ้น เค้กมีมากกว่าโดนัท 9 ชิ้น ร้านขนมมีเค้กกี่ชิ้น?",
+          eqLabel: "จำนวนเค้ก =",
+          slots: simpleEq(12, "+", 9, 21)
+        },
+        {
+          story: "ในสวนมีต้นมะม่วง 20 ต้น ต้นมะพร้าวมีมากกว่าต้นมะม่วง 6 ต้น มีต้นมะพร้าวกี่ต้น?",
+          eqLabel: "จำนวนต้นมะพร้าว =",
+          slots: simpleEq(20, "+", 6, 26)
+        },
+        {
+          story: "ต้นมีสติ๊กเกอร์รูปดาว 14 แผ่น สติ๊กเกอร์รูปหัวใจมีมากกว่ารูปดาว 8 แผ่น สติ๊กเกอร์รูปหัวใจมีกี่แผ่น?",
+          eqLabel: "สติ๊กเกอร์รูปหัวใจ =",
+          slots: simpleEq(14, "+", 8, 22)
+        },
+        {
+          story: "ตะกร้าใบหนึ่งมีส้ม 19 ผล แอปเปิ้ลมีมากกว่าส้ม 3 ผล แอปเปิ้ลมีกี่ผล?",
+          eqLabel: "จำนวนแอปเปิ้ล =",
+          slots: simpleEq(19, "+", 3, 22)
+        },
+        {
+          story: "หิ้งหนังสือชั้นล่างมีหนังสือ 21 เล่ม ชั้นบนมีมากกว่าชั้นล่าง 5 เล่ม ชั้นบนมีหนังสือกี่เล่ม?",
+          eqLabel: "หนังสือชั้นบน =",
+          slots: simpleEq(21, "+", 5, 26)
+        },
+        {
+          story: "ในกล่องมีปากกาสีฟ้า 17 แท่ง ปากกาสีแดงมีมากกว่าสีฟ้า 6 แท่ง ปากกาสีแดงมีกี่แท่ง?",
+          eqLabel: "ปากกาสีแดง =",
+          slots: simpleEq(17, "+", 6, 23)
+        },
+        {
+          story: "สนามเด็กเล่นมีชิงช้า 9 อัน มีสไลเดอร์มากกว่าชิงช้า 7 อัน มีสไลเดอร์กี่อัน?",
+          eqLabel: "จำนวนสไลเดอร์ =",
+          slots: simpleEq(9, "+", 7, 16)
+        }
+      ],
+
+      B: [
+        {
+          story: "แม่มีดอกไม้ 24 ดอก ลูกมีดอกไม้น้อยกว่าแม่ 7 ดอก ลูกมีดอกไม้กี่ดอก?",
+          eqLabel: "ดอกไม้ของลูก =",
+          slots: simpleEq(24, "-", 7, 17)
+        },
+        {
+          story: "พี่มีลูกอม 19 เม็ด น้องมีน้อยกว่าพี่ 5 เม็ด น้องมีลูกอมกี่เม็ด?",
+          eqLabel: "ลูกอมของน้อง =",
+          slots: simpleEq(19, "-", 5, 14)
+        },
+        {
+          story: "ในสวนมีผีเสื้อ 28 ตัว ตัวที่เกาะดอกไม้มีน้อยกว่าผีเสื้อทั้งหมด 10 ตัว ผีเสื้อที่เกาะดอกไม้มีกี่ตัว?",
+          eqLabel: "ผีเสื้อที่เกาะดอกไม้ =",
+          slots: simpleEq(28, "-", 10, 18)
+        },
+        {
+          story: "กล่องหนึ่งมีดินสอสี 30 แท่ง ดินสอสีที่ถูกใช้ประจำน้อยกว่าทั้งหมด 12 แท่ง ดินสอสีที่ถูกใช้ประจำมีกี่แท่ง?",
+          eqLabel: "ดินสอสีที่ใช้ประจำ =",
+          slots: simpleEq(30, "-", 12, 18)
+        },
+        {
+          story: "ห้องสมุดมีหนังสือ 35 เล่ม หนังสือนิทานมีน้อยกว่าหนังสือทั้งหมด 9 เล่ม หนังสือนิทานมีกี่เล่ม?",
+          eqLabel: "หนังสือนิทาน =",
+          slots: simpleEq(35, "-", 9, 26)
+        },
+        {
+          story: "ป้าซื้อส้มมา 26 ผล ส้มที่แจกเด็กมีน้อยกว่าส้มทั้งหมด 11 ผล ป้าแจกส้มไปกี่ผล?",
+          eqLabel: "ส้มที่แจกเด็ก =",
+          slots: simpleEq(26, "-", 11, 15)
+        },
+        {
+          story: "ครูมีปากกา 22 แท่ง ปากกาที่มีหมึกอยู่ น้อยกว่าปากกาทั้งหมด 6 แท่ง ปากกาที่มีหมึกอยู่มีกี่แท่ง?",
+          eqLabel: "ปากกาที่มีหมึก =",
+          slots: simpleEq(22, "-", 6, 16)
+        },
+        {
+          story: "หิ้งของเล่นมีหุ่นยนต์ 18 ตัว หุ่นยนต์ที่เปิดเสียงได้มีน้อยกว่าหุ่นยนต์ทั้งหมด 7 ตัว หุ่นยนต์ที่เปิดเสียงได้มีกี่ตัว?",
+          eqLabel: "หุ่นยนต์ที่เปิดเสียงได้ =",
+          slots: simpleEq(18, "-", 7, 11)
+        },
+        {
+          story: "ในกล่องมีลูกบอล 25 ลูก ลูกบอลสีแดงมีน้อยกว่าลูกบอลทั้งหมด 8 ลูก ลูกบอลสีแดงมีกี่ลูก?",
+          eqLabel: "ลูกบอลสีแดง =",
+          slots: simpleEq(25, "-", 8, 17)
+        },
+        {
+          story: "รถบัสรับเด็ก 32 คน เด็กที่นั่งด้านหน้ามีน้อยกว่าทั้งหมด 14 คน เด็กที่นั่งด้านหน้ากี่คน?",
+          eqLabel: "เด็กที่นั่งด้านหน้า =",
+          slots: simpleEq(32, "-", 14, 18)
+        }
+      ],
+
+      C: [
+        {
+          story: "ในสวนมีแมว 16 ตัว สุนัขมีมากกว่าแมว 7 ตัว สุนัขมีกี่ตัว?",
+          eqLabel: "จำนวนสุนัข =",
+          slots: simpleEq(16, "+", 7, 23)
+        },
+        {
+          story: "พี่มีดินสอ 21 แท่ง น้องมีน้อยกว่าพี่ 6 แท่ง น้องมีดินสอกี่แท่ง?",
+          eqLabel: "ดินสอของน้อง =",
+          slots: simpleEq(21, "-", 6, 15)
+        },
+        {
+          story: "ต้นไม้ใหญ่มีใบ 30 ใบ ต้นไม้เล็กมีน้อยกว่าต้นไม้ใหญ่ 9 ใบ ต้นไม้เล็กมีกี่ใบ?",
+          eqLabel: "ใบของต้นไม้เล็ก =",
+          slots: simpleEq(30, "-", 9, 21)
+        },
+        {
+          story: "ห้องเรียนมีโต๊ะนักเรียน 18 ตัว โต๊ะครูมีน้อยกว่าโต๊ะนักเรียน 15 ตัว โต๊ะครูมีกี่ตัว?",
+          eqLabel: "โต๊ะของครู =",
+          slots: simpleEq(18, "-", 15, 3)
+        },
+        {
+          story: "กล่องหนึ่งมีสติ๊กเกอร์รูปดาว 14 แผ่น รูปหัวใจมีมากกว่ารูปดาว 5 แผ่น รูปหัวใจมีกี่แผ่น?",
+          eqLabel: "สติ๊กเกอร์รูปหัวใจ =",
+          slots: simpleEq(14, "+", 5, 19)
+        },
+        {
+          story: "ห้อง A มีนักเรียน 27 คน ห้อง B มีมากกว่าห้อง A 4 คน ห้อง B มีกี่คน?",
+          eqLabel: "นักเรียนห้อง B =",
+          slots: simpleEq(27, "+", 4, 31)
+        },
+        {
+          story: "ร้านขนมมีเค้ก 22 ชิ้น ขนมปังมีน้อยกว่าเค้ก 8 ชิ้น ขนมปังมีกี่ชิ้น?",
+          eqLabel: "จำนวนขนมปัง =",
+          slots: simpleEq(22, "-", 8, 14)
+        },
+        {
+          story: "มีลูกโป่งสีฟ้า 19 ลูก ลูกโป่งสีชมพูมีมากกว่าสีฟ้า 6 ลูก ลูกโป่งสีชมพูมีกี่ลูก?",
+          eqLabel: "ลูกโป่งสีชมพู =",
+          slots: simpleEq(19, "+", 6, 25)
+        },
+        {
+          story: "ครูมีดินสอสี 25 แท่ง ดินสอสีที่ถูกใช้วันนี้มีน้อยกว่าทั้งหมด 7 แท่ง ดินสอสีที่ถูกใช้วันนี้มีกี่แท่ง?",
+          eqLabel: "ดินสอสีที่ใช้วันนี้ =",
+          slots: simpleEq(25, "-", 7, 18)
+        },
+        {
+          story: "ในตู้เย็นมีนมกล่อง 17 กล่อง น้ำผลไม้มีมากกว่านม 5 กล่อง น้ำผลไม้มีกี่กล่อง?",
+          eqLabel: "น้ำผลไม้ =",
+          slots: simpleEq(17, "+", 5, 22)
+        }
+      ],
+
+      // Part D: 3 บรรทัด
+      D: [
+        {
+          story: "แม่มีเงิน 100 บาท พ่อมีเงินมากกว่าแม่ 80 บาท พ่อกับแม่มีเงินรวมกันกี่บาท?",
+          lines: [
+            {
+              label: "เงินแม่ =",
+              slots: [{ type: "num", correct: 100 }]
+            },
+            {
+              label: "เงินพ่อ =",
+              slots: [
+                { type: "num", correct: 100 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 80 }
+              ],
+              answer: 180
+            },
+            {
+              label: "เงินพ่อกับแม่รวมกัน =",
+              slots: [
+                { type: "num", correct: 100 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 180 }
+              ],
+              answer: 280
+            }
+          ]
+        },
+        {
+          story: "แม่มีดอกไม้ 60 ดอก ยายมีดอกไม้น้อยกว่าแม่ 15 ดอก แม่กับยายมีดอกไม้รวมกันกี่ดอก?",
+          lines: [
+            {
+              label: "ดอกไม้ของแม่ =",
+              slots: [{ type: "num", correct: 60 }]
+            },
+            {
+              label: "ดอกไม้ของยาย =",
+              slots: [
+                { type: "num", correct: 60 },
+                { type: "op", correct: "-" },
+                { type: "num", correct: 15 }
+              ],
+              answer: 45
+            },
+            {
+              label: "ดอกไม้ของแม่กับยายรวมกัน =",
+              slots: [
+                { type: "num", correct: 60 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 45 }
+              ],
+              answer: 105
+            }
+          ]
+        },
+        {
+          story: "ในกล่องมีลูกอมของพี่ 40 เม็ด น้องมีลูกอมมากกว่าพี่ 25 เม็ด พี่กับน้องมีลูกอมรวมกันกี่เม็ด?",
+          lines: [
+            {
+              label: "ลูกอมของพี่ =",
+              slots: [{ type: "num", correct: 40 }]
+            },
+            {
+              label: "ลูกอมของน้อง =",
+              slots: [
+                { type: "num", correct: 40 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 25 }
+              ],
+              answer: 65
+            },
+            {
+              label: "ลูกอมของพี่กับน้องรวมกัน =",
+              slots: [
+                { type: "num", correct: 40 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 65 }
+              ],
+              answer: 105
+            }
+          ]
+        },
+        {
+          story: "พ่อมีดินสอ 35 แท่ง ลูกมีดินสอน้อยกว่าพ่อ 12 แท่ง พ่อกับลูกมีดินสอรวมกันกี่แท่ง?",
+          lines: [
+            {
+              label: "ดินสอของพ่อ =",
+              slots: [{ type: "num", correct: 35 }]
+            },
+            {
+              label: "ดินสอของลูก =",
+              slots: [
+                { type: "num", correct: 35 },
+                { type: "op", correct: "-" },
+                { type: "num", correct: 12 }
+              ],
+              answer: 23
+            },
+            {
+              label: "ดินสอของพ่อกับลูกรวมกัน =",
+              slots: [
+                { type: "num", correct: 35 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 23 }
+              ],
+              answer: 58
+            }
+          ]
+        },
+        {
+          story: "ในสวนมีแมว 18 ตัว สุนัขมีมากกว่าแมว 9 ตัว แมวกับสุนัขรวมกันกี่ตัว?",
+          lines: [
+            {
+              label: "จำนวนแมว =",
+              slots: [{ type: "num", correct: 18 }]
+            },
+            {
+              label: "จำนวนสุนัข =",
+              slots: [
+                { type: "num", correct: 18 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 9 }
+              ],
+              answer: 27
+            },
+            {
+              label: "จำนวนแมวและสุนัขรวมกัน =",
+              slots: [
+                { type: "num", correct: 18 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 27 }
+              ],
+              answer: 45
+            }
+          ]
+        },
+        {
+          story: "ห้องสมุดมีหนังสือของครู 55 เล่ม หนังสือของนักเรียนน้อยกว่าหนังสือของครู 20 เล่ม หนังสือของครูกับนักเรียนรวมกันกี่เล่ม?",
+          lines: [
+            {
+              label: "หนังสือของครู =",
+              slots: [{ type: "num", correct: 55 }]
+            },
+            {
+              label: "หนังสือของนักเรียน =",
+              slots: [
+                { type: "num", correct: 55 },
+                { type: "op", correct: "-" },
+                { type: "num", correct: 20 }
+              ],
+              answer: 35
+            },
+            {
+              label: "หนังสือของครูกับนักเรียนรวมกัน =",
+              slots: [
+                { type: "num", correct: 55 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 35 }
+              ],
+              answer: 90
+            }
+          ]
+        },
+        {
+          story: "ร้านผลไม้มีส้ม 30 ผล มีแอปเปิ้ลมากกว่าส้ม 16 ผล ส้มกับแอปเปิ้ลรวมกันกี่ผล?",
+          lines: [
+            {
+              label: "จำนวนส้ม =",
+              slots: [{ type: "num", correct: 30 }]
+            },
+            {
+              label: "จำนวนแอปเปิ้ล =",
+              slots: [
+                { type: "num", correct: 30 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 16 }
+              ],
+              answer: 46
+            },
+            {
+              label: "ส้มและแอปเปิ้ลรวมกัน =",
+              slots: [
+                { type: "num", correct: 30 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 46 }
+              ],
+              answer: 76
+            }
+          ]
+        },
+        {
+          story: "พี่มีสติ๊กเกอร์ 70 แผ่น น้องมีสติ๊กเกอร์น้อยกว่าพี่ 25 แผ่น พี่กับน้องมีสติ๊กเกอร์รวมกันกี่แผ่น?",
+          lines: [
+            {
+              label: "สติ๊กเกอร์ของพี่ =",
+              slots: [{ type: "num", correct: 70 }]
+            },
+            {
+              label: "สติ๊กเกอร์ของน้อง =",
+              slots: [
+                { type: "num", correct: 70 },
+                { type: "op", correct: "-" },
+                { type: "num", correct: 25 }
+              ],
+              answer: 45
+            },
+            {
+              label: "สติ๊กเกอร์ของพี่กับน้องรวมกัน =",
+              slots: [
+                { type: "num", correct: 70 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 45 }
+              ],
+              answer: 115
+            }
+          ]
+        },
+        {
+          story: "โรงเรียนมีโต๊ะนักเรียนชั้นล่าง 45 ตัว ชั้นบนมีมากกว่าชั้นล่าง 18 ตัว โต๊ะนักเรียนชั้นล่างและชั้นบนรวมกันกี่ตัว?",
+          lines: [
+            {
+              label: "โต๊ะชั้นล่าง =",
+              slots: [{ type: "num", correct: 45 }]
+            },
+            {
+              label: "โต๊ะชั้นบน =",
+              slots: [
+                { type: "num", correct: 45 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 18 }
+              ],
+              answer: 63
+            },
+            {
+              label: "โต๊ะชั้นล่างและชั้นบนรวมกัน =",
+              slots: [
+                { type: "num", correct: 45 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 63 }
+              ],
+              answer: 108
+            }
+          ]
+        },
+        {
+          story: "ในกล่องของเล่นมีหุ่นยนต์ 22 ตัว ตุ๊กตามีน้อยกว่าหุ่นยนต์ 6 ตัว หุ่นยนต์กับตุ๊กตารวมกันกี่ตัว?",
+          lines: [
+            {
+              label: "จำนวนหุ่นยนต์ =",
+              slots: [{ type: "num", correct: 22 }]
+            },
+            {
+              label: "จำนวนตุ๊กตา =",
+              slots: [
+                { type: "num", correct: 22 },
+                { type: "op", correct: "-" },
+                { type: "num", correct: 6 }
+              ],
+              answer: 16
+            },
+            {
+              label: "หุ่นยนต์และตุ๊กตารวมกัน =",
+              slots: [
+                { type: "num", correct: 22 },
+                { type: "op", correct: "+" },
+                { type: "num", correct: 16 }
+              ],
+              answer: 38
+            }
+          ]
+        }
+      ]
+    };
+
+    // -------------------------
+    // STATE
+    // -------------------------
+    let currentPart = null;
+    let currentIndex = 0;
+    let currentQuestions = [];
+    let currentSlots = [];
+    let selectedSlotIndex = null;
+    let attempts = 0;
+    let score = 0;
+    let studentName = "";
+
+    // -------------------------
+    // DOM
+    // -------------------------
+    const startScreen = document.getElementById("start-screen");
+    const gameScreen = document.getElementById("game-screen");
+    const partButtons = Array.from(document.querySelectorAll(".part-btn"));
+    const startBtn = document.getElementById("start-btn");
+    const studentNameInput = document.getElementById("student-name");
+
+    const nameDisplay = document.getElementById("name-display");
+    const partDisplay = document.getElementById("part-display");
+    const scoreDisplay = document.getElementById("score-display");
+    const questionText = document.getElementById("question-text");
+    const equationArea = document.getElementById("equation-area");
+
+    const messageArea = document.getElementById("message-area");
+    const backHomeBtn = document.getElementById("back-home-btn");
+    const checkBtn = document.getElementById("check-btn");
+    const nextBtn = document.getElementById("next-btn");
+
+    const keypadButtons = Array.from(document.querySelectorAll(".key-btn"));
+    const clearSlotBtn = document.getElementById("clear-slot");
+    const clearAllBtn = document.getElementById("clear-all");
+
+    // -------------------------
+    // Helpers
+    // -------------------------
+    function updateStartButtonState() {
+      const nameFilled = studentNameInput.value.trim().length > 0;
+      const partChosen = !!currentPart;
+      startBtn.disabled = !(nameFilled && partChosen);
+    }
+
+    function setMessage(text, emoji) {
+      messageArea.innerHTML = "";
+      if (emoji) {
+        const spanEmoji = document.createElement("span");
+        spanEmoji.className = "emoji";
+        spanEmoji.textContent = emoji;
+        messageArea.appendChild(spanEmoji);
+      }
+      const spanText = document.createElement("span");
+      spanText.textContent = text || "";
+      messageArea.appendChild(spanText);
+    }
+
+    function launchConfetti() {
+      const count = 60;
+      for (let i = 0; i < count; i++) {
+        const piece = document.createElement("div");
+        piece.className = "confetti-piece";
+        const startX = Math.random() * 100;
+        const endX = startX + (Math.random() * 40 - 20);
+        piece.style.setProperty("--x-start", startX + "vw");
+        piece.style.setProperty("--x-end", endX + "vw");
+        const colors = ["#ffeb3b", "#ff4081", "#40c4ff", "#b388ff", "#69f0ae"];
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 1500);
+      }
+    }
+
+    function renderScore() {
+      scoreDisplay.textContent = `คะแนน: ${score}/${currentIndex + 1}`;
+    }
+
+    function clearSelectionHighlight() {
+      const allSlots = equationArea.querySelectorAll(".slot");
+      allSlots.forEach(s => s.classList.remove("selected"));
+    }
+
+    function setSlotsDisabled(disabled) {
+      const allSlots = equationArea.querySelectorAll(".slot");
+      allSlots.forEach(s => {
+        if (disabled) {
+          s.classList.add("disabled");
+        } else {
+          s.classList.remove("disabled");
+        }
+      });
+    }
+
+    function renderQuestion() {
+      const q = currentQuestions[currentIndex];
+      selectedSlotIndex = null;
+      attempts = 0;
+      currentSlots = [];
+      questionText.textContent = q.story;
+      equationArea.innerHTML = "";
+
+      if (q.lines && Array.isArray(q.lines)) {
+        // ---------- Part D: หลายบรรทัด ----------
+        q.lines.forEach((line) => {
+          const row = document.createElement("div");
+          row.className = "equation-row";
+
+          const labelDiv = document.createElement("div");
+          labelDiv.className = "equation-line-label";
+          labelDiv.textContent = line.label;
+          row.appendChild(labelDiv);
+
+          const slotsWrap = document.createElement("div");
+          slotsWrap.className = "equation-line-slots";
+
+          line.slots.forEach((slotDef) => {
+            const idx = currentSlots.length;
+            currentSlots.push({ ...slotDef, value: "" });
+
+            const div = document.createElement("div");
+            if (slotDef.type === "op") {
+              div.className = "circle-slot slot";
+            } else {
+              div.className = "square-slot slot";
+            }
+            div.dataset.index = idx;
+            div.textContent = "";
+            div.addEventListener("click", () => {
+              if (div.classList.contains("disabled")) return;
+              selectedSlotIndex = idx;
+              clearSelectionHighlight();
+              div.classList.add("selected");
+              playClickSound(520);
+            });
+
+            slotsWrap.appendChild(div);
+          });
+
+          if (typeof line.answer === "number") {
+            const eqSpan = document.createElement("span");
+            eqSpan.className = "slot-label";
+            eqSpan.textContent = "=";
+            slotsWrap.appendChild(eqSpan);
+
+            const ansIdx = currentSlots.length;
+            currentSlots.push({ type: "ans", correct: line.answer, value: "" });
+
+            const ansDiv = document.createElement("div");
+            ansDiv.className = "square-slot answer-slot slot";
+            ansDiv.dataset.index = ansIdx;
+            ansDiv.textContent = "";
+            ansDiv.addEventListener("click", () => {
+              if (ansDiv.classList.contains("disabled")) return;
+              selectedSlotIndex = ansIdx;
+              clearSelectionHighlight();
+              ansDiv.classList.add("selected");
+              playClickSound(520);
+            });
+
+            slotsWrap.appendChild(ansDiv);
+          }
+
+          row.appendChild(slotsWrap);
+          equationArea.appendChild(row);
+        });
+      } else {
+        // ---------- Part A–C: 1 บรรทัด พร้อมข้อความสรุปหน้าสมการ ----------
+        currentSlots = q.slots.map(s => ({ ...s, value: "" }));
+
+        const row = document.createElement("div");
+        row.className = "equation-row";
+
+        const labelDiv = document.createElement("div");
+        labelDiv.className = "equation-line-label";
+        labelDiv.textContent = q.eqLabel || "";
+        row.appendChild(labelDiv);
+
+        const slotsWrap = document.createElement("div");
+        slotsWrap.className = "equation-line-slots";
+
+        currentSlots.forEach((slot, idx) => {
+          // ก่อนช่องคำตอบ ให้ใส่ " = "
+          if (slot.type === "ans") {
+            const eqSpan = document.createElement("span");
+            eqSpan.className = "slot-label";
+            eqSpan.textContent = "=";
+            slotsWrap.appendChild(eqSpan);
+          }
+
+          const div = document.createElement("div");
+          if (slot.type === "op") {
+            div.className = "circle-slot slot";
+          } else if (slot.type === "ans") {
+            div.className = "square-slot answer-slot slot";
+          } else {
+            div.className = "square-slot slot";
+          }
+          div.dataset.index = idx;
+          div.textContent = "";
+          div.addEventListener("click", () => {
+            if (div.classList.contains("disabled")) return;
+            selectedSlotIndex = idx;
+            clearSelectionHighlight();
+            div.classList.add("selected");
+            playClickSound(520);
+          });
+
+          slotsWrap.appendChild(div);
+        });
+
+        row.appendChild(slotsWrap);
+        equationArea.appendChild(row);
+      }
+
+      setSlotsDisabled(false);
+      renderScore();
+      setMessage("ลองอ่านโจทย์ให้เข้าใจก่อน แล้วค่อยเติมสมการนะจ๊ะ 💜", "📝");
+    }
+
+    function fillSlotsWithCorrectAnswer() {
+      const slotDivs = equationArea.querySelectorAll(".slot");
+      slotDivs.forEach(div => {
+        const idx = Number(div.dataset.index);
+        const slot = currentSlots[idx];
+        if (!slot) return;
+        if (slot.type === "num" || slot.type === "ans") {
+          div.textContent = slot.correct;
+          slot.value = String(slot.correct);
+        } else if (slot.type === "op") {
+          div.textContent = slot.correct;
+          slot.value = slot.correct;
+        }
+      });
+    }
+
+    function checkAnswer() {
+      playClickSound(440);
+
+      // 1) ตรวจว่ากรอกครบทุกช่องที่ต้องกรอกจริง ๆ
+      for (let i = 0; i < currentSlots.length; i++) {
+        const slot = currentSlots[i];
+        if (!slot) continue;
+
+        // (กันเผื่ออนาคต ถ้ามี type eq แต่ตอนนี้ไม่มีแล้ว)
+        if (slot.type === "eq") continue;
+
+        const div = equationArea.querySelector(`.slot[data-index="${i}"]`);
+        const val = div ? (div.textContent || "").trim() : "";
+
+        if (!val) {
+          setMessage("ลองกรอกให้ครบทุกช่องก่อนนะจ๊ะ ✏️", "🙂");
+          return;
+        }
+      }
+
+      // 2) ตรวจถูก/ผิด
+      let allCorrect = true;
+
+      for (let i = 0; i < currentSlots.length; i++) {
+        const slot = currentSlots[i];
+        if (!slot) continue;
+        if (slot.type === "eq") continue;
+
+        const div = equationArea.querySelector(`.slot[data-index="${i}"]`);
+        const val = (div.textContent || "").trim();
+        currentSlots[i].value = val;
+
+        if (slot.type === "num" || slot.type === "ans") {
+          const target = Number(slot.correct);
+          const userVal = Number(val);
+          if (userVal !== target) {
+            allCorrect = false;
+          }
+        } else if (slot.type === "op") {
+          if (val !== slot.correct) {
+            allCorrect = false;
+          }
+        }
+      }
+
+      if (allCorrect) {
+        score++;
+        renderScore();
+        launchConfetti();
+        setMessage("เยี่ยมมาก! Wowwww! 🎉", "😊");
+        setSlotsDisabled(true);
+      } else {
+        attempts++;
+        if (attempts === 1) {
+          setMessage("ยังไม่ตรง ลองแก้อีกครั้งได้นะ 💪", "😅");
+        } else {
+          fillSlotsWithCorrectAnswer();
+          setSlotsDisabled(true);
+          setMessage("ยังไม่ถูกนะจ๊ะ นี่คือเฉลยที่ถูกต้อง 🌟", "📘");
+        }
+      }
+    }
+
+    function goToNextQuestion() {
+      playClickSound(500);
+      if (currentIndex < currentQuestions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+      } else {
+        setMessage(
+          `จบ Part นี้แล้ว! ได้คะแนน ${score}/${currentQuestions.length} เก่งมากเลย 🎉`,
+          "🏆"
+        );
+        setSlotsDisabled(true);
+      }
+    }
+
+    function resetAllSlots() {
+      const slotDivs = equationArea.querySelectorAll(".slot");
+      slotDivs.forEach(div => {
+        if (!div.classList.contains("disabled")) {
+          div.textContent = "";
+        }
+      });
+      currentSlots = currentSlots.map(s => s ? { ...s, value: "" } : s);
+      attempts = 0;
+      setSlotsDisabled(false);
+      setMessage("ลองเริ่มเติมสมการใหม่อีกครั้งนะ ✏️", "🔁");
+    }
+
+    // -------------------------
+    // Events
+    // -------------------------
+
+    partButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        playClickSound();
+        partButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentPart = btn.dataset.part;
+        updateStartButtonState();
+      });
+    });
+
+    studentNameInput.addEventListener("input", updateStartButtonState);
+
+    startBtn.addEventListener("click", () => {
+      playClickSound();
+      studentName = studentNameInput.value.trim() || "นักเรียน";
+      currentQuestions = questionsByPart[currentPart];
+      currentIndex = 0;
+      score = 0;
+
+      nameDisplay.textContent = `👧 ชื่อ: ${studentName}`;
+      partDisplay.textContent = `Part ${currentPart}`;
+      scoreDisplay.textContent = `คะแนน: 0/1`;
+
+      startScreen.style.display = "none";
+      gameScreen.style.display = "block";
+
+      renderQuestion();
+    });
+
+    backHomeBtn.addEventListener("click", () => {
+      playClickSound();
+      gameScreen.style.display = "none";
+      startScreen.style.display = "block";
+      setMessage("", "");
+      partButtons.forEach(b => b.classList.remove("active"));
+      currentPart = null;
+      updateStartButtonState();
+    });
+
+    checkBtn.addEventListener("click", () => {
+      checkAnswer();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      goToNextQuestion();
+    });
+
+    keypadButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const key = btn.dataset.key;
+        if (!key) return;
+        playClickSound(700);
+
+        if (selectedSlotIndex === null) {
+          setMessage("แตะเลือกช่องที่ต้องการกรอกก่อนนะจ๊ะ 💡", "👉");
+          return;
+        }
+
+        const slot = currentSlots[selectedSlotIndex];
+        const div = equationArea.querySelector(
+          `.slot[data-index="${selectedSlotIndex}"]`
+        );
+        if (!slot || !div || div.classList.contains("disabled")) return;
+
+        if (slot.type === "op") {
+          if (key === "+" || key === "-") {
+            div.textContent = key;
+          }
+        } else if (slot.type === "num" || slot.type === "ans") {
+          if (/[0-9]/.test(key)) {
+            const currentText = (div.textContent || "").trim();
+            if (currentText.length >= 3) return;
+            div.textContent = currentText + key;
+          }
+        }
+      });
+    });
+
+    clearSlotBtn.addEventListener("click", () => {
+      playClickSound(400);
+      if (selectedSlotIndex === null) {
+        setMessage("เลือกช่องก่อนแล้วค่อยกดลบนะจ๊ะ 🧽", "🧼");
+        return;
+      }
+      const div = equationArea.querySelector(
+        `.slot[data-index="${selectedSlotIndex}"]`
+      );
+      if (div && !div.classList.contains("disabled")) {
+        div.textContent = "";
+      }
+    });
+
+    clearAllBtn.addEventListener("click", () => {
+      playClickSound(360);
+      resetAllSlots();
+    });
+  </script>
+</body>
+</html>
